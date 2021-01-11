@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	{{ encore_entry_link_tags('registration') }}
+{% endblock %}
+{% block body %}
+	<div class="container">
+		{{ form_start(form) }}
+		<section id="form-group1">
+			<h2>Inscription !</h2>
+			{{ form_label(form.firstname) }}
+			{{ form_widget(form.firstname) }}
+			{{ form_label(form.lastname) }}
+			{{ form_widget(form.lastname) }}
+			{{ form_label(form.email) }}
+			{{ form_widget(form.email) }}
+			{{ form_label(form.password) }}
+			{{ form_widget(form.password) }}
+			{{ form_label(form.confirm_password) }}
+			{{ form_widget(form.confirm_password) }}
+			<button type="button" class="btn-box" id="suivant">
+				Suivant</button>
+		</section>
+		<section id="form-group2" hidden="true">
+			{{ form_label(form.birth_date) }}
+			{{ form_widget(form.birth_date) }}
+			{{ form_label(form.address) }}
+			{{ form_widget(form.address) }}
+			{{ form_label(form.city) }}
+			{{ form_widget(form.city) }}
+			{{ form_label(form.postal_code) }}
+			{{ form_widget(form.postal_code) }}
+			{{ form_widget(form._token) }}
+			<button type="button" class="btn-box" id="precedent">
+				Précédent</button>
+			<button type="submit" class="btn-box">
+				Inscription</button>
+		</section>
+
+		{{ form_end(form) }}
+	</div>
+	<script>
+		var Form1 = document.getElementById("form-group1");
+var Form2 = document.getElementById("form-group2");
+
+var Next = document.getElementById("suivant");
+var Back = document.getElementById("precedent");
+Next.onclick = function () {
+Form1.setAttribute("hidden", "true");
+Form2.removeAttribute("hidden");
+}
+Back.onclick = function () {
+Form2.setAttribute("hidden", "true");
+Form1.removeAttribute("hidden");
+}
+	</script>
+{% endblock %}

@@ -5,9 +5,15 @@ namespace App\Entity;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
+ * @UniqueEntity(
+ *  fields={"email"},
+ *  message="L'email que vous avez tapé est déjà utilisé"
+ * )
  */
 class Users implements UserInterface
 {
@@ -35,7 +41,7 @@ class Users implements UserInterface
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $photo_url;
 
@@ -47,8 +53,14 @@ class Users implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Length(min="8", minMessage="8 caractères minimum")
      */
     private $password;
+
+    /**
+     * @Assert\EqualTo(propertyPath="confirm_password", message="Vous n'avez pas tapé le même mot de passe")
+     */
+    public $confirm_password;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -71,39 +83,29 @@ class Users implements UserInterface
     private $address;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\OneToOne(targetEntity=Post::class, mappedBy="user", cascade={"persist", "remove"})
      */
-    private $instagram_login;
+    private $post;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\OneToOne(targetEntity=Facebook::class, mappedBy="usermail", cascade={"persist", "remove"})
      */
-    private $facebook_login;
+    private $facebook;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\OneToOne(targetEntity=Twitter::class, mappedBy="usermail", cascade={"persist", "remove"})
      */
-    private $twitter_login;
+    private $twitter;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\OneToOne(targetEntity=Instagram::class, mappedBy="usermail", cascade={"persist", "remove"})
      */
-    private $linkedIn_login;
+    private $instagram;
 
     /**
-     * @ORM\OneToOne(targetEntity=InstagramIds::class, mappedBy="instagram_login", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=LinkedIn::class, mappedBy="usermail", cascade={"persist", "remove"})
      */
-    private $instagramIds;
-
-    /**
-     * @ORM\OneToOne(targetEntity=TwitterIds::class, mappedBy="twitter_login", cascade={"persist", "remove"})
-     */
-    private $twitterIds;
-
-    /**
-     * @ORM\OneToOne(targetEntity=LinkedInIds::class, mappedBy="linkedIn_login", cascade={"persist", "remove"})
-     */
-    private $linkedInIds;
+    private $linkedIn;
 
     public function getId(): ?int
     {
@@ -206,54 +208,6 @@ class Users implements UserInterface
         return $this;
     }
 
-    public function getInstagramLogin(): ?string
-    {
-        return $this->instagram_login;
-    }
-
-    public function setInstagramLogin(?string $instagram_login): self
-    {
-        $this->instagram_login = $instagram_login;
-
-        return $this;
-    }
-
-    public function getFacebookLogin(): ?string
-    {
-        return $this->facebook_login;
-    }
-
-    public function setFacebookLogin(?string $facebook_login): self
-    {
-        $this->facebook_login = $facebook_login;
-
-        return $this;
-    }
-
-    public function getTwitterLogin(): ?string
-    {
-        return $this->twitter_login;
-    }
-
-    public function setTwitterLogin(?string $twitter_login): self
-    {
-        $this->twitter_login = $twitter_login;
-
-        return $this;
-    }
-
-    public function getLinkedInLogin(): ?string
-    {
-        return $this->linkedIn_login;
-    }
-
-    public function setLinkedInLogin(?string $linkedIn_login): self
-    {
-        $this->linkedIn_login = $linkedIn_login;
-
-        return $this;
-    }
-
     /**
      * A visual identifier that represents this user.
      *
@@ -315,68 +269,87 @@ class Users implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getInstagramIds(): ?InstagramIds
+    public function getPost(): ?Post
     {
-        return $this->instagramIds;
+        return $this->post;
     }
 
-    public function setInstagramIds(?InstagramIds $instagramIds): self
+    public function setPost(Post $post): self
     {
-        // unset the owning side of the relation if necessary
-        if ($instagramIds === null && $this->instagramIds !== null) {
-            $this->instagramIds->setInstagramLogin(null);
-        }
-
         // set the owning side of the relation if necessary
-        if ($instagramIds !== null && $instagramIds->getInstagramLogin() !== $this) {
-            $instagramIds->setInstagramLogin($this);
+        if ($post->getUser() !== $this) {
+            $post->setUser($this);
         }
 
-        $this->instagramIds = $instagramIds;
+        $this->post = $post;
 
         return $this;
     }
 
-    public function getTwitterIds(): ?TwitterIds
+    public function getFacebook(): ?Facebook
     {
-        return $this->twitterIds;
+        return $this->facebook;
     }
 
-    public function setTwitterIds(?TwitterIds $twitterIds): self
+    public function setFacebook(Facebook $facebook): self
     {
-        // unset the owning side of the relation if necessary
-        if ($twitterIds === null && $this->twitterIds !== null) {
-            $this->twitterIds->setTwitterLogin(null);
-        }
-
         // set the owning side of the relation if necessary
-        if ($twitterIds !== null && $twitterIds->getTwitterLogin() !== $this) {
-            $twitterIds->setTwitterLogin($this);
+        if ($facebook->getUsermail() !== $this) {
+            $facebook->setUsermail($this);
         }
 
-        $this->twitterIds = $twitterIds;
+        $this->facebook = $facebook;
 
         return $this;
     }
 
-    public function getLinkedInIds(): ?LinkedInIds
+    public function getTwitter(): ?Twitter
     {
-        return $this->linkedInIds;
+        return $this->twitter;
     }
 
-    public function setLinkedInIds(?LinkedInIds $linkedInIds): self
+    public function setTwitter(Twitter $twitter): self
     {
-        // unset the owning side of the relation if necessary
-        if ($linkedInIds === null && $this->linkedInIds !== null) {
-            $this->linkedInIds->setLinkedInLogin(null);
-        }
-
         // set the owning side of the relation if necessary
-        if ($linkedInIds !== null && $linkedInIds->getLinkedInLogin() !== $this) {
-            $linkedInIds->setLinkedInLogin($this);
+        if ($twitter->getUsermail() !== $this) {
+            $twitter->setUsermail($this);
         }
 
-        $this->linkedInIds = $linkedInIds;
+        $this->twitter = $twitter;
+
+        return $this;
+    }
+
+    public function getInstagram(): ?Instagram
+    {
+        return $this->instagram;
+    }
+
+    public function setInstagram(Instagram $instagram): self
+    {
+        // set the owning side of the relation if necessary
+        if ($instagram->getUsermail() !== $this) {
+            $instagram->setUsermail($this);
+        }
+
+        $this->instagram = $instagram;
+
+        return $this;
+    }
+
+    public function getLinkedIn(): ?LinkedIn
+    {
+        return $this->linkedIn;
+    }
+
+    public function setLinkedIn(LinkedIn $linkedIn): self
+    {
+        // set the owning side of the relation if necessary
+        if ($linkedIn->getUsermail() !== $this) {
+            $linkedIn->setUsermail($this);
+        }
+
+        $this->linkedIn = $linkedIn;
 
         return $this;
     }
