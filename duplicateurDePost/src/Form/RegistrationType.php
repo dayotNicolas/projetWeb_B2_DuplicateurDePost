@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class RegistrationType extends AbstractType
@@ -41,6 +42,10 @@ class RegistrationType extends AbstractType
             ])
             ->add('address', TextType::class, [
                 'label' => 'Adresse',
+            ])
+            ->add('imagefile', FileType::class, [
+                'required' => false,
+                'label' => 'Choisissez une photo de profil'
             ]);
     }
 

@@ -32,6 +32,14 @@
 			{{ form_widget(form._token) }}
 			<button type="button" class="btn-box" id="precedent">
 				Précédent</button>
+			<button type="button" class="btn-box" id="suivant2">
+				Suivant</button>
+		</section>
+		<section id="form-group3" hidden="true">
+			{{ form_label(form.imagefile) }}
+			{{ form_widget(form.imagefile) }}
+			<button type="button" class="btn-box" id="precedent2">
+				Précédent</button>
 			<button type="submit" class="btn-box">
 				Inscription</button>
 		</section>
@@ -41,9 +49,12 @@
 	<script>
 		var Form1 = document.getElementById("form-group1");
 var Form2 = document.getElementById("form-group2");
+var Form3 = document.getElementById("form-group3");
 
 var Next = document.getElementById("suivant");
 var Back = document.getElementById("precedent");
+var Next2 = document.getElementById("suivant2");
+var Back2 = document.getElementById("precedent2");
 Next.onclick = function () {
 Form1.setAttribute("hidden", "true");
 Form2.removeAttribute("hidden");
@@ -51,6 +62,14 @@ Form2.removeAttribute("hidden");
 Back.onclick = function () {
 Form2.setAttribute("hidden", "true");
 Form1.removeAttribute("hidden");
+}
+Next2.onclick = function () {
+Form2.setAttribute("hidden", "true");
+Form3.removeAttribute("hidden");
+}
+Back2.onclick = function () {
+Form3.setAttribute("hidden", "true");
+Form2.removeAttribute("hidden");
 }
 	</script>
 {% endblock %}

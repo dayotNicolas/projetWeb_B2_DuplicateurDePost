@@ -1,8 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
+{% block title %}homePage
+{% endblock %}
+{% block stylesheets %}
+	{{ encore_entry_link_tags('home') }}
 {% endblock %}
 
+
 {% block body %}
-	<p class="card-text">{{app.user.firstname}}</p>
+	<div id="leftContainer">
+		{% if app.user.filename %}
+			<img src="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('thumb') }}" class="circle-img" alt"img-profil">
+		{% endif %}
+		<p>{{app.user.firstname}}</p>
+		<p>{{app.user.lastname}}</p>
+		<p>habite à :
+			{{app.user.city}}</p>
+		<div id=" logoscontainer">
+			<p>réseaux associés :
+			</p>
+			<div id="logos">
+				<img alt="fb logo" src="{{ asset('build/icon-facebook.png') }}"/>
+				<img alt="twitter logo" src="{{ asset('build/icon-twitter.png') }}"/>
+				<img alt="instagram logo" src="{{ asset('build/icon-instagram.png') }}"/>
+				<img alt="linkedIn logo" src="{{ asset('build/icon-linkedin.png') }}"/>
+			</div>
+		</div>
+		<button type="button" class="btn-box" id="addPostButton">
+			Nouveau Post</button>
+		<a href="">Modifier le profil</a>
+		<a href="">Déconnexion</a>
+	</div>
 {% endblock %}
