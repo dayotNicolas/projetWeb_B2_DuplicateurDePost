@@ -18,7 +18,7 @@ class Post
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Users::class, inversedBy="post", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="post")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -33,10 +33,10 @@ class Post
      */
     private $message;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+    /** 
+     * @ORM\Column(type="string", length=255, nullable=true) 
      */
-    private $url_photoPost;
+    protected ?string $picture = null;
 
     public function getId(): ?int
     {
@@ -79,15 +79,13 @@ class Post
         return $this;
     }
 
-    public function getUrlPhotoPost(): ?string
+    public function getPicture(): ?string
     {
-        return $this->url_photoPost;
+        return $this->picture;
     }
 
-    public function setUrlPhotoPost(?string $url_photoPost): self
+    public function setPicture(?string $picture): void
     {
-        $this->url_photoPost = $url_photoPost;
-
-        return $this;
+        $this->picture = $picture;
     }
 }

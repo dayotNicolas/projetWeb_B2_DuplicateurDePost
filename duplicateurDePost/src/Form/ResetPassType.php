@@ -2,26 +2,25 @@
 
 namespace App\Form;
 
-use App\Entity\Twitter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class TwitterType extends AbstractType
+class ResetPassType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('twitter_login')
-            ->add('twitter_password')
-            ->add('usermail')
-        ;
+            ->add('email', EmailType::class)
+            ->add('envoyer', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Twitter::class,
+            // Configure your form options here
         ]);
     }
 }

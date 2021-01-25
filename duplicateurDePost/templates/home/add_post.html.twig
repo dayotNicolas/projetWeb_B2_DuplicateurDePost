@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}homePage
+{% endblock %}
+{% block stylesheets %}
+	{{ encore_entry_link_tags('post') }}
+{% endblock %}
+
+
+{% block body %}
+	<nav>
+		<ul class="nav-list">
+			<li class="nav-item">
+				<a href="#"><img alt="Duplicapost logo" src="{{ asset('build/logo-duplicapost.png') }}"/></a>
+			</li>
+			<li class="nav-item">
+				<a href="{{ path('home') }}">Profil</a>
+			</li>
+			<li class="nav-item">
+				<a href="{{ path('security_logout') }}">Déconnexion</a>
+			</li>
+		</ul>
+	</nav>
+	<div id="container">
+		<div id="leftContainer">
+			{% if app.user.avatar %}
+				<img src="{{ app.user.avatar }}" class="circle-img" alt="img-profil">
+				<a href="#modal3" class="js-modal">Modifier la photo</a>
+				<aside id="modal3" class="modal" aria-hidden="true" role="dialog" style="display:none;">
+					<div class="modal-wrapper js-modal-stop">
+						{{ form_start(form_update_profil_picture) }}
+						<h2>Modifier la photo de profil</h2>
+						{{ form_label(form_update_profil_picture.avatar) }}
+						{{ form_widget(form_update_profil_picture.avatar) }}
+						<button type="submit" class="btn-box">
+							Modifier</button>
+						{{ form_end(form_update_profil_picture) }}
+					</div>
+				</aside>
+			{% endif %}
+			<p>{{app.user.firstname}}</p>
+			<p>{{app.user.lastname}}</p>
+			<p>habite à :
+				{{app.user.city}}</p>
+			<div id=" logoscontainer">
+				<p>réseaux associés :
+				</p>
+				<div id="logos">
+					<img alt="fb logo" src="{{ asset('build/icon-facebook.png') }}"/>
+					<img alt="twitter logo" src="{{ asset('build/icon-twitter.png') }}"/>
+					<img alt="instagram logo" src="{{ asset('build/icon-instagram.png') }}"/>
+					<img alt="linkedIn logo" src="{{ asset('build/icon-linkedin.png') }}"/>
+				</div>
+			</div>
+		</div>
+		<div id="form-Post-Container">
+			{{ form_start(form_post) }}
+			{{ form_end(form_post) }}
+		</div>
+		<div class="publicity">Conteneur publicité</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('home') }}
+{% endblock %}

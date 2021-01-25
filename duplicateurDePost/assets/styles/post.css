@@ -11,14 +11,14 @@ body {
 .circle-img {
   width: 75%;
   height: 75%;
-  overflow: hidden;
-  -webkit-border-radius: 50px;
-  -moz-border-radius: 50px;
-  border-radius: 50%;
   max-width: 250px;
   max-height: 250px;
   min-width: 200px;
   min-height: 200px;
+  overflow: hidden;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50%;
 }
 
 .nav-list {
@@ -47,6 +47,11 @@ body {
 .nav-item:first-child {
   margin-right: auto;
   margin-left: 2rem;
+}
+
+#container {
+  display: flex;
+  flex-direction: row;
 }
 
 #leftContainer {
@@ -91,12 +96,6 @@ body {
   justify-items: center;
 }
 
-#bigContainer {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
 .publicity {
   background-color: orangered;
   width: 160px;
@@ -104,9 +103,4 @@ body {
   margin-left: auto;
   margin-right: 2rem;
   margin-top: 100px;
-}
-
-.postcontainer {
-  margin-left: 2rem;
-  margin-top: 2rem;
 }

@@ -5,30 +5,142 @@
 {% block stylesheets %}
 	{{ encore_entry_link_tags('home') }}
 {% endblock %}
-
-
 {% block body %}
-	<div id="leftContainer">
-		{% if app.user.filename %}
-			<img src="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('thumb') }}" class="circle-img" alt"img-profil">
-		{% endif %}
-		<p>{{app.user.firstname}}</p>
-		<p>{{app.user.lastname}}</p>
-		<p>habite à :
-			{{app.user.city}}</p>
-		<div id=" logoscontainer">
-			<p>réseaux associés :
-			</p>
-			<div id="logos">
-				<img alt="fb logo" src="{{ asset('build/icon-facebook.png') }}"/>
-				<img alt="twitter logo" src="{{ asset('build/icon-twitter.png') }}"/>
-				<img alt="instagram logo" src="{{ asset('build/icon-instagram.png') }}"/>
-				<img alt="linkedIn logo" src="{{ asset('build/icon-linkedin.png') }}"/>
+	<nav>
+		<ul class="nav-list">
+			<li class="nav-item">
+				<a href="#"><img alt="Duplicapost logo" src="{{ asset('build/logo-duplicapost.png') }}"/></a>
+			</li>
+			<li class="nav-item">
+				<a href="{{ path('add_post') }}">Nouveau Post</a>
+			</li>
+			<li class="nav-item">
+				<a href="{{ path('home') }}#">Profil</a>
+			</li>
+			<li class="nav-item">
+				<a href="#modal1" class="js-modal">Ajouter un réseau</a>
+				<aside id="modal1" class="modal" aria-hidden="true" role="dialog" style="display:none;">
+					<div class="modal-wrapper js-modal-stop">
+						{{ form_start(form_social_network) }}
+						<h2>Associer un nouveau réseau</h2>
+						{{ form_label(form_social_network.network_name) }}
+						{{ form_widget(form_social_network.network_name) }}
+						{{ form_label(form_social_network.network_login) }}
+						{{ form_widget(form_social_network.network_login) }}
+						{{ form_label(form_social_network.network_password) }}
+						{{ form_widget(form_social_network.network_password) }}
+						{{ form_label(form_social_network.Ajouter) }}
+						{{ form_widget(form_social_network.Ajouter) }}
+						{{ form_end(form_social_network) }}
+					</div>
+				</aside>
+			</li>
+			<li class="nav-item">
+				<a href="#modal2" class="js-modal">Modifier le Profil</a>
+				<aside id="modal2" class="modal" aria-hidden="true" role="dialog" style="display:none;">
+					<div class="modal-wrapper js-modal-stop">
+						{{ form_start(form_update_profil) }}
+						<section id="form-group1">
+							<h2>Modifier le profil !</h2>
+							{{ form_label(form_update_profil.firstname) }}
+							{{ form_widget(form_update_profil.firstname) }}
+							{{ form_label(form_update_profil.lastname) }}
+							{{ form_widget(form_update_profil.lastname) }}
+							{{ form_label(form_update_profil.password) }}
+							{{ form_widget(form_update_profil.password) }}
+							{{ form_label(form_update_profil.confirm_password) }}
+							{{ form_widget(form_update_profil.confirm_password) }}
+							<button type="button" class="btn-box" id="suivant">
+								Suivant</button>
+						</section>
+						<section id="form-group2" hidden="true">
+							{{ form_label(form_update_profil.address) }}
+							{{ form_widget(form_update_profil.address) }}
+							{{ form_label(form_update_profil.city) }}
+							{{ form_widget(form_update_profil.city) }}
+							{{ form_label(form_update_profil.postal_code) }}
+							{{ form_widget(form_update_profil.postal_code) }}
+							{{ form_widget(form_update_profil._token) }}
+							<button type="button" class="btn-box" id="precedent">
+								Précédent</button>
+							<button type="submit" class="btn-box">
+								Modifier</button>
+						</section>
+						{{ form_end(form_update_profil) }}
+					</div>
+				</aside>
+			</li>
+			<li class="nav-item">
+				<a href="{{ path('security_logout') }}">Déconnexion</a>
+			</li>
+		</ul>
+	</nav>
+	<div id="bigContainer">
+		<div id="leftContainer">
+			{% if app.user.avatar %}
+				<img src="{{ app.user.avatar }}" class="circle-img" alt="img-profil">
+			{% endif %}
+			<a href="#modal3" class="js-modal">Modifier la photo</a>
+			<aside id="modal3" class="modal" aria-hidden="true" role="dialog" style="display:none;">
+				<div class="modal-wrapper js-modal-stop">
+					{{ form_start(form_update_profil_picture) }}
+					<h2>Modifier la photo de profil</h2>
+					{{ form_label(form_update_profil_picture.avatar) }}
+					{{ form_widget(form_update_profil_picture.avatar) }}
+					<button type="submit" class="btn-box">
+						Modifier</button>
+					{{ form_end(form_update_profil_picture) }}
+				</div>
+			</aside>
+			<p>{{app.user.firstname}}</p>
+			<p>{{app.user.lastname}}</p>
+			<p>habite à :
+				{{app.user.city}}</p>
+			<div id=" logoscontainer">
+				<p>réseaux associés :
+				</p>
+				<div id="logos">
+					<img alt="fb logo" src="{{ asset('build/icon-facebook.png') }}"/>
+					<img alt="twitter logo" src="{{ asset('build/icon-twitter.png') }}"/>
+					<img alt="instagram logo" src="{{ asset('build/icon-instagram.png') }}"/>
+					<img alt="linkedIn logo" src="{{ asset('build/icon-linkedin.png') }}"/>
+				</div>
 			</div>
 		</div>
-		<button type="button" class="btn-box" id="addPostButton">
-			Nouveau Post</button>
-		<a href="">Modifier le profil</a>
-		<a href="">Déconnexion</a>
+		<div class="postcontainer">
+			{% for post in posts %}
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">{{post.titre}}</h5>
+							<p class="card-text">{{post.message}}</p>
+							<img src="{{post.picture}}" class="card-img-top" alt="...">
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+
+		</div>
+		<div class="publicity">Conteneur publicité</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('home') }}
+	<script>
+		var Form1 = document.getElementById("form-group1");
+var Form2 = document.getElementById("form-group2");
+
+var Next = document.getElementById("suivant");
+var Back = document.getElementById("precedent");
+
+Next.onclick = function () {
+Form1.setAttribute("hidden", "true");
+Form2.removeAttribute("hidden");
+}
+Back.onclick = function () {
+Form2.setAttribute("hidden", "true");
+Form1.removeAttribute("hidden");
+}
+	</script>
 {% endblock %}

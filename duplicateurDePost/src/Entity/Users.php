@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UsersRepository;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *  fields={"email"},
  *  message="L'email que vous avez tapé est déjà utilisé"
  * )
- * @Vich\Uploadable()
  */
 class Users implements UserInterface
 {
@@ -29,22 +28,14 @@ class Users implements UserInterface
     private $id;
 
     /**
-     * @var string|null
-     * @ORM\Column(type="string", length=255)
-     */
-    private $filename;
-
-    /**
-     * @var File|null
-     * @Vich\UploadableField(mapping="user_image", fileNameProperty="filename")
-     */
-    private $imageFile;
-
-
-    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
+
+    /** 
+     * @ORM\Column(type="string", length=255, nullable=true) 
+     */
+    protected ?string $avatar = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -94,34 +85,29 @@ class Users implements UserInterface
     private $address;
 
     /**
-     * @ORM\OneToOne(targetEntity=Post::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="user", orphanRemoval=true)
      */
     private $post;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Facebook::class, mappedBy="usermail", cascade={"persist", "remove"})
-     */
-    private $facebook;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Twitter::class, mappedBy="usermail", cascade={"persist", "remove"})
-     */
-    private $twitter;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Instagram::class, mappedBy="usermail", cascade={"persist", "remove"})
-     */
-    private $instagram;
-
-    /**
-     * @ORM\OneToOne(targetEntity=LinkedIn::class, mappedBy="usermail", cascade={"persist", "remove"})
-     */
-    private $linkedIn;
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $updated_at;
+
+    /**
+     * @ORM\OneToMany(targetEntity=SocialNetwork::class, mappedBy="network", orphanRemoval=true)
+     */
+    private $socialNetworks;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $reset_token;
+
+    public function __construct()
+    {
+        $this->socialNetworks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -290,113 +276,6 @@ class Users implements UserInterface
         return $this;
     }
 
-    public function getFacebook(): ?Facebook
-    {
-        return $this->facebook;
-    }
-
-    public function setFacebook(Facebook $facebook): self
-    {
-        // set the owning side of the relation if necessary
-        if ($facebook->getUsermail() !== $this) {
-            $facebook->setUsermail($this);
-        }
-
-        $this->facebook = $facebook;
-
-        return $this;
-    }
-
-    public function getTwitter(): ?Twitter
-    {
-        return $this->twitter;
-    }
-
-    public function setTwitter(Twitter $twitter): self
-    {
-        // set the owning side of the relation if necessary
-        if ($twitter->getUsermail() !== $this) {
-            $twitter->setUsermail($this);
-        }
-
-        $this->twitter = $twitter;
-
-        return $this;
-    }
-
-    public function getInstagram(): ?Instagram
-    {
-        return $this->instagram;
-    }
-
-    public function setInstagram(Instagram $instagram): self
-    {
-        // set the owning side of the relation if necessary
-        if ($instagram->getUsermail() !== $this) {
-            $instagram->setUsermail($this);
-        }
-
-        $this->instagram = $instagram;
-
-        return $this;
-    }
-
-    public function getLinkedIn(): ?LinkedIn
-    {
-        return $this->linkedIn;
-    }
-
-    public function setLinkedIn(LinkedIn $linkedIn): self
-    {
-        // set the owning side of the relation if necessary
-        if ($linkedIn->getUsermail() !== $this) {
-            $linkedIn->setUsermail($this);
-        }
-
-        $this->linkedIn = $linkedIn;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getFilename(): ?string
-    {
-        return $this->filename;
-    }
-
-    /**
-     * @param null|string $filename
-     * @return self
-     */
-    public function setFilename(?string $filename): self
-    {
-        $this->filename = $filename;
-        return $this;
-    }
-
-    /**
-     * @return null|File
-     */
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    /**
-     * @param null|File $imagefile
-     * @return self
-     */
-    public function setImageFile(?File $imagefile): self
-    {
-        $this->imageFile = $imagefile;
-        if ($this->imageFile instanceof UploadedFile) {
-            $this->updated_at = new \DateTime('now');
-        }
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updated_at;
@@ -405,6 +284,63 @@ class Users implements UserInterface
     public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
+    /**
+     * @return Collection|SocialNetwork[]
+     */
+    public function getSocialNetworks(): Collection
+    {
+        return $this->socialNetworks;
+    }
+
+    public function addSocialNetwork(SocialNetwork $socialNetwork): self
+    {
+        if (!$this->socialNetworks->contains($socialNetwork)) {
+            $this->socialNetworks[] = $socialNetwork;
+            $socialNetwork->setNetwork($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSocialNetwork(SocialNetwork $socialNetwork): self
+    {
+        if ($this->socialNetworks->removeElement($socialNetwork)) {
+            // set the owning side to null (unless already changed)
+            if ($socialNetwork->getNetwork() === $this) {
+                $socialNetwork->setNetwork(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->firstname;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->reset_token;
+    }
+
+    public function setResetToken(?string $reset_token): self
+    {
+        $this->reset_token = $reset_token;
 
         return $this;
     }
