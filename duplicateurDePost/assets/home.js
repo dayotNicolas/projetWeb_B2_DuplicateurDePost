@@ -20,22 +20,22 @@ const openModal = function (e) {
     target.removeAttribute('aria-hidden');
     target.setAttribute('aria-modal', 'true');
     modal = target;
- //   modal.addEventListener('click', closeModal);
+    modal.addEventListener('click', closeModal);
     //modal.querySelector('#social_network_Ajouter').addEventListener('click', closeModal);
     modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
 }
 
-//const closeModal = function (e) {
-//    if (modal === null) return;
- //   e.preventDefault();
-  //  modal.style.display = "none";
-  //  modal.setAttribute('aria-hidden', 'true');
-  //  modal.removeAttribute('aria-modal');
-  //  modal.removeEventListener('click', closeModal);
-  //  modal.querySelector('#social_network_Ajouter').removeEventListener('click', closeModal);
-  //  modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
- //   modal = null;
-//}
+const closeModal = function (e) {
+    if (modal === null) return;
+    e.preventDefault();
+    modal.style.display = "none";
+    modal.setAttribute('aria-hidden', 'true');
+    modal.removeAttribute('aria-modal');
+    modal.removeEventListener('click', closeModal);
+    modal.querySelector('#social_network_Ajouter').removeEventListener('click', closeModal);
+    modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
+    modal = null;
+}
 
 const stopPropagation = function (e) {
     e.stopPropagation();
