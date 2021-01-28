@@ -14,16 +14,20 @@ body {
 .container {
   display: flex;
   flex-direction: row;
+  width: 75%;
+  margin: auto;
 }
 
 .container1 {
   width: 375px;
   height: 500px;
-  margin: 8% auto;
+  margin: auto;
   background: #fff;
   border-radius: 5px;
   position: relative;
-  float: left;
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
 }
 
 .container2 {
@@ -31,9 +35,9 @@ body {
   height: auto;
   margin: 18% auto;
   min-width: 300px;
-  margin-left: -20%;
   background: #fff;
   border-radius: 5px;
+  padding: 2%;
 }
 
 .btn-box {
@@ -56,15 +60,7 @@ button {
 }
 
 a {
-  width: 110px;
-  height: 35px;
-  margin: 0 10px;
-  background: linear-gradient(to right, #ff105f, #ffad06);
-  border-radius: 30px;
-  border: 0;
-  outline: none;
-  color: #fff;
-  cursor: pointer;
+  text-decoration: none;
 }
 
 form h1 {
@@ -81,4 +77,184 @@ form h1 {
   border-bottom: 1px solid #999;
   outline: none;
   background: transparent;
+}
+
+span {
+  margin-top: 25%;
+  margin-bottom: 35%;
+}
+
+@media (min-width: 768px) and (max-width: 1388px) {
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+
+  body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+      url(../images/sky-arriere-plan.jpg);
+    background-position: center;
+    background-size: cover;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    margin: auto;
+  }
+
+  .container1 {
+    width: 375px;
+    height: 100%;
+    margin: auto;
+    background: #fff;
+    border-radius: 5px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+  }
+
+  .container2 {
+    width: auto;
+    height: auto;
+    margin: 5% auto;
+    min-width: 300px;
+    background: #fff;
+    border-radius: 5px;
+    padding: 2%;
+  }
+
+  .btn-box {
+    width: 100%;
+    margin: 15px auto;
+    text-align: center;
+    align-items: flex-end;
+  }
+
+  button {
+    width: 110px;
+    height: 35px;
+    margin: 0 10px;
+    background: linear-gradient(to right, #ff105f, #ffad06);
+    border-radius: 30px;
+    border: 0;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  form h1 {
+    color: 777;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .form-group input {
+    width: 90%;
+    padding: 10px 5px;
+    margin: 5px 0;
+    border: 0;
+    border-bottom: 1px solid #999;
+    outline: none;
+    background: transparent;
+  }
+
+  span {
+    margin-top: 25%;
+    margin-bottom: 35%;
+  }
+}
+
+@media (max-width: 767px) {
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+
+  body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+      url(../images/sky-arriere-plan.jpg);
+    background-position: center;
+    background-size: cover;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: auto;
+  }
+
+  .container1 {
+    width: 100%;
+    height: 100%;
+    margin: 5% auto;
+    background: #fff;
+    border-radius: 5px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+  }
+
+  .container2 {
+    width: 100%;
+    height: auto;
+    margin: 5% auto;
+    background: #fff;
+    border-radius: 5px;
+    padding: 2%;
+  }
+
+  .btn-box {
+    width: 100%;
+    margin: 15px auto;
+    text-align: center;
+    align-items: flex-end;
+  }
+
+  button {
+    width: 110px;
+    height: 35px;
+    margin: 0 10px;
+    background: linear-gradient(to right, #ff105f, #ffad06);
+    border-radius: 30px;
+    border: 0;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  form h1 {
+    color: 777;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .form-group input {
+    width: 90%;
+    padding: 10px 5px;
+    margin: 5px 0;
+    border: 0;
+    border-bottom: 1px solid #999;
+    outline: none;
+    background: transparent;
+  }
+
+  span {
+    margin-top: 25%;
+    margin-bottom: 35%;
+  }
 }

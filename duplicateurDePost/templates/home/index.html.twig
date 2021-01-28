@@ -80,7 +80,7 @@
 			{% if app.user.avatar %}
 				<img src="{{ app.user.avatar }}" class="circle-img" alt="img-profil">
 			{% endif %}
-			<a href="#modal3" class="js-modal">Modifier la photo</a>
+			<a href="#modal3" class="js-modal" id="modif_picture">Modifier la photo</a>
 			<aside id="modal3" class="modal" aria-hidden="true" role="dialog" style="display:none;">
 				<div class="modal-wrapper js-modal-stop">
 					{{ form_start(form_update_profil_picture) }}
