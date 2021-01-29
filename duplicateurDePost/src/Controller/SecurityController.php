@@ -99,7 +99,7 @@ class SecurityController extends AbstractController
             $url = $this->generateUrl('app_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $email = (new TemplatedEmail())
-                ->from('dayot.nicolas@ynov.com')
+                ->from('jeannedupuis28@gmail.com')
                 ->to($user->getEmail())
                 ->subject('Réinitialiser votre mot de passe Duplicapost')
                 ->htmlTemplate('forgot_password/forgot_password_email.html.twig')

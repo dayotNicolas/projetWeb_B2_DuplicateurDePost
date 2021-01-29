@@ -18,8 +18,8 @@ body {
   border-radius: 50%;
   max-width: 250px;
   max-height: 250px;
-  min-width: 200px;
-  min-height: 200px;
+  min-width: 225px;
+  min-height: 225px;
   margin: 5%;
 }
 
@@ -168,4 +168,12 @@ button {
   outline: none;
   color: #fff;
   cursor: pointer;
+}
+
+.post-title {
+  margin: 3%;
+}
+
+.post-message {
+  margin-bottom: 1%;
 }
